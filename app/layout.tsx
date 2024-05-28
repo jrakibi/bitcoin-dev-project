@@ -77,7 +77,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         src="https://visits.bitcoindevs.xyz/script.js"
         data-website-id="4ee856e4-582c-4a9c-a1c5-10757123803e"
       />
-      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
+      {/* <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white"> */}
+      <body className={barlow.className}>
 
         <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
         <Fonts />
