@@ -1,4 +1,4 @@
-import { slugify } from "@/utils/slugify";
+import { slugify } from "utils/slugify";
 
 export const toolsData = [
   {
@@ -103,6 +103,10 @@ export const links = [
   {
     text: "About",
     linkTo: "/about",
+  },
+  {
+    text: "Glossary",
+    linkTo: "/blog",
   },
 ];
 

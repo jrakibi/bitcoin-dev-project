@@ -1,7 +1,7 @@
-import { links } from "@/content/data";
 import Link from "next/link";
 import Drawer from "./drawer";
 import { Desktop, LearnDropDown } from "./learn-dropdown";
+import { links } from "content/data";
 
 export default function NavBar() {
   return (
