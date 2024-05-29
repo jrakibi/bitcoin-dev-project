@@ -9,6 +9,15 @@ import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import Summary from '@/components/glossary/summary'
+import TopicMetadata from '@/components/glossary/topic-metadata'
+import Metadata from '@/components/glossary/metadata'
+import ExpandableSection from '@/components/glossary/expandable-section'
+import RelatedTopics from '@/components/glossary/related-topics'
+import NextPrevious from '@/components/glossary/next-previous'
+import RelatedTopic from '@/components/glossary/related-topic'
+import NewsletterForm from 'pliny/ui/NewsletterForm'
+import BlogNewsletterForm from 'pliny/ui/BlogNewsletterForm'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path) =>
@@ -34,7 +43,66 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
   const basePath = path.split('/')[0]
 
   return (
-    <SectionContainer>
+    <>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className="mx-auto" >
+        <div className="flex items-center space-x-2 mb-6  mt-6">
+          <BookIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+          <span className="text-sm">Glossary</span>
+          <ChevronRightIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <span className="text-sm font-bold">P</span>
+          <ChevronRightIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <span className="text-sm font-bold">{title}</span>
+        </div>
+        <div>
+          <h1 className="text-6xl font-bold mb-6">{title}</h1>
+        </div>
+        <div className="flex" style={{width: '78vw'}}>
+
+          <div className="w-3/4 pr-8">
+            <div className="mb-5">
+              <Metadata badges={tags} />
+
+            </div>
+
+            <Summary summary="fsdfdsfsfsd" />
+
+
+            {/* <div className="prose" dangerouslySetInnerHTML={{ __html: contentHtml }} /> */}
+            <div className="prose max-w-none pb-8 pt-10">{children}</div>
+            <RelatedTopics />
+            <NextPrevious nextTopic={next?.title} previousTopic={prev?.title} />
+          </div>
+
+
+
+          <div className="w-1/4 pl-6">
+            <RelatedTopic />
+            {/* <BlogNewsletterForm f /> */}
+            <NewsletterForm title="Get the Latest Updates" apiUrl="https://api.example.com/subscribe" />
+
+            {/* <BlogNewsletterForm /> */}
+          </div>
+
+        </div>
+      </div>
+
+
+      {/* <SectionContainer>
       <ScrollTopAndComment />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
@@ -163,6 +231,89 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
           </div>
         </div>
       </article>
-    </SectionContainer>
+    </SectionContainer> */}
+    </>
+
+  )
+}
+
+
+
+function ChevronRightIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  )
+}
+
+
+function BookIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+    </svg>
+  )
+}
+
+function CircleIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+    </svg>
+  )
+}
+
+
+function HomeIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
   )
 }

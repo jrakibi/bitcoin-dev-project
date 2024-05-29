@@ -2,6 +2,7 @@ import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
+import { GlossartBanner2 } from '@/components/glossart-banner2'
 
 const POSTS_PER_PAGE = 5
 
@@ -20,11 +21,11 @@ export default function BlogPage() {
   }
 
   return (
-    <ListLayout
+    
+    <><GlossartBanner2 /><ListLayout
       posts={posts}
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}
-      title="All Posts"
-    />
+      title="All Posts" /></>
   )
 }

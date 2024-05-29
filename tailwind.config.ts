@@ -61,6 +61,6 @@ const config: Config = {
       // => @media (max-width: 500px) { ... }
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require("tailwindcss-animate"), require("tailwindcss-animate")],
 };
 export default config;

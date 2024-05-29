@@ -3,18 +3,12 @@ import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import siteMetadata from '@/data/siteMetadata'
 
-import Fonts, { barlow } from "@/components/font";
+import Fonts, { barlow, space_grotesk } from "@/components/font";
 import Footer from "@/components/footer";
 import NavBar from "@/components/nav-bar";
 import type { Metadata } from "next";
 import "./globals.css";
 
-
-const space_grotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-space-grotesk',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -77,8 +71,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         src="https://visits.bitcoindevs.xyz/script.js"
         data-website-id="4ee856e4-582c-4a9c-a1c5-10757123803e"
       />
-      {/* <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white"> */}
-      <body className={barlow.className}>
+      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased">
+      {/* <body className={barlow.className}> */}
 
         <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
         <Fonts />

@@ -13,13 +13,23 @@ import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
+import PostBDP from '@/layouts/PostBDP'
 
 const defaultLayout = 'PostLayout'
-const layouts = {
+// const layouts = {
+//   PostSimple,
+//   PostLayout,
+//   PostBanner,
+// }
+
+const layouts: {
+  [key: string]: ({ content, next, prev, children }: any) => JSX.Element;
+} = {
   PostSimple,
   PostLayout,
   PostBanner,
-}
+  PostBDP,
+};
 
 export async function generateMetadata({
   params,
@@ -106,8 +116,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
     }
   })
 
-  const Layout = layouts[post.layout || defaultLayout]
-
+  // const Layout = layouts[post.layout || defaultLayout]
+  const Layout = PostBDP
+  
   return (
     <>
       <script

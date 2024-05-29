@@ -66,6 +66,7 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     images: {
+    domains: ['bitcoinmagazine.com', 'image.binance.vision', 'allprivatekeys.com', 'miro.medium.com', 'www.mdpi.com', 'media.springernature.com'],
       remotePatterns: [
         {
           protocol: 'https',
