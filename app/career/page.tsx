@@ -1,4 +1,5 @@
 import { Wrapper } from "@/components/Wrapper"
+import { genPageMetadata } from "../seo"
 
 type Props = {
     content: string | React.ReactNode
@@ -7,19 +8,48 @@ type Props = {
 
 const Item = ({ content, title }: Props) => (
     <div className="gap-2">
-        <h2 className="text-2xl md:text-xl font-medium leading-normal">
+        <h2 className="text-2xl max-md:text-xl font-medium leading-normal">
             {title}
         </h2>
-        <section className="text-lg md:text-md">{content}</section>
+        <section className="text-lg max-md:text-md">{content}</section>
     </div>
 )
+
+export const metadata = genPageMetadata({
+    title: "Start Your Career in Bitcoin Open Source Development - Grants",
+    keywords:
+        "bitcoin, bitcoin grant, open source, career, good first issues, bitcoin development, bitcoin topics",
+    description:
+        "Start Your Career in Bitcoin Open Source Development and apply to earn a grant for full-time bitcoin open source work",
+    openGraph: {
+        images: [
+            {
+                url: "https://bitcoindevs.xyz/images/pages-thumbnails/career.png",
+                alt: "Bitcoin career"
+            }
+        ],
+        title: "Start Your Career in Bitcoin Open Source Development - Grants",
+        url: "https://bitcoindevs.xyz/career",
+        type: "website",
+        description:
+            "Start Your Career in Bitcoin Open Source Development and apply to earn a grant for full-time bitcoin open source work"
+    },
+    twitter: {
+        images: ["https://bitcoindevs.xyz/images/pages-thumbnails/career.png"],
+        card: "summary_large_image",
+        title: "Start Your Career in Bitcoin Open Source Development",
+        creator: "@Bitcoin_Devs",
+        description:
+            "Start Your Career in Bitcoin Open Source Development and apply to earn a grant for full-time bitcoin open source work"
+    }
+})
 
 export default function Career() {
     return (
         <Wrapper>
-            <div className="flex flex-col p-14 sm:p-7 mx-auto my-0">
-                <div className="flex flex-col mb-24 gap-y-10 w-2/3 md:w-full self-center">
-                    <h1 className="text-[58px] lg:text-[32px] md:text-center font-bold leading-tight">
+            <div className="flex flex-col p-14 max-sm:p-7 mx-auto my-0">
+                <div className="flex flex-col mb-24 gap-y-10 w-2/3 max-md:w-full self-center">
+                    <h1 className="text-[58px] max-lg:text-[32px] max-md:text-center font-bold leading-tight">
                         Start Your Career in Bitcoin Open Source Development
                     </h1>
                     <Item
