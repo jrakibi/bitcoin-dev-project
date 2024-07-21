@@ -48,6 +48,7 @@ export default function ExpandableSection({
                     )}
                     <span>{isExpanded ? "Show Less" : "Show More"}</span>
                 </button>
+                {isExpanded && <div className="mt-4">{children}</div>}
                 {/* {isExpanded && <div className="mt-4">{children}</div>}
                 {isExpanded && <div className="mt-4">{children}</div>}
                 <button
