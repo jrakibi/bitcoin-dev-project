@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import PropTypes from "prop-types"
 import * as bitcoin from "bitcoinjs-lib"
 import bs58 from "bs58"
@@ -16,38 +16,25 @@ const P2SHEncoder = ({ initialScriptHash = "" }) => {
     const [isPrefixValid, setIsPrefixValid] = useState(true)
     const [isAnimating, setIsAnimating] = useState(true)
 
-    useEffect(() => {
-        updatePrefix()
+    const updatePrefix = useCallback(() => {
+        const newPrefix = network === "mainnet" ? "05" : "c4"
+        setPrefix(newPrefix)
     }, [network])
 
     useEffect(() => {
-        if (validatePrefix(prefix) && scriptHash.length === 40) {
-            calculateChecksumAndAddress()
-        } else {
-            setAddress("")
-        }
-        setIsPrefixValid(validatePrefix(prefix))
-    }, [prefix, scriptHash, network])
+        updatePrefix()
+    }, [updatePrefix])
 
-    const updatePrefix = () => {
-        const newPrefix = network === "mainnet" ? "05" : "c4"
-        setPrefix(newPrefix)
-    }
-
-    const validatePrefix = (value) => {
+    const validatePrefix = (value: string) => {
         return value === "05" || value === "c4"
     }
 
-    const calculateChecksumAndAddress = () => {
+    const calculateChecksumAndAddress = useCallback(() => {
         try {
             if (scriptHash.length !== 40) {
                 throw new Error("Script hash must be 40 characters long")
             }
 
-            const networkObj =
-                network === "mainnet"
-                    ? bitcoin.networks.bitcoin
-                    : bitcoin.networks.testnet
             const versionByte = Buffer.from(prefix, "hex")
             const scriptHashBuffer = Buffer.from(scriptHash, "hex")
 
@@ -72,7 +59,16 @@ const P2SHEncoder = ({ initialScriptHash = "" }) => {
             setChecksum("")
             setAddress("")
         }
-    }
+    }, [prefix, scriptHash])
+
+    useEffect(() => {
+        if (validatePrefix(prefix) && scriptHash.length === 40) {
+            calculateChecksumAndAddress()
+        } else {
+            setAddress("")
+        }
+        setIsPrefixValid(validatePrefix(prefix))
+    }, [prefix, scriptHash, calculateChecksumAndAddress])
 
     const generateRandomScriptHash = () => {
         const randomBytes = crypto.getRandomValues(new Uint8Array(20))

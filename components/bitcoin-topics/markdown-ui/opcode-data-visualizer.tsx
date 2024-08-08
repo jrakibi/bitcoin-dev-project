@@ -1,28 +1,26 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
-import Image from "next/image"
+import React, { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
-const OpcodeDataVisualizer = () => {
-    const svgRef = useRef(null)
-    const [info, setInfo] = useState(null)
+interface OpcodeInfo {
+    opcode: string
+    description: string
+    details: string
+    example: string
+    funFact?: string
+}
+
+const OpcodeDataVisualizer: React.FC = () => {
+    const svgRef = useRef<SVGSVGElement | null>(null)
+    const [info, setInfo] = useState<OpcodeInfo | null>(null)
 
     useEffect(() => {
         const svgElement = svgRef.current
 
-        const handleClick = (event) => {
-            const targetId = event.target.id
+        const handleClick = (event: Event) => {
+            const targetId = (event.target as HTMLElement).id
 
-            let data = {
-                opcode: "OP_DATAPUSH",
-                description: "Dynamic data pushing (1-75 bytes)",
-                details:
-                    "OP_DATAPUSH is a versatile opcode family used to efficiently push varying amounts of data onto the stack. It's designed to handle data sizes from 1 to 75 bytes, making it ideal for a wide range of operations in blockchain scripting.",
-                example:
-                    "OP_DATAPUSH_32 0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t",
-                funFact:
-                    "This opcode family is so commonly used that it accounts for over 60% of all opcodes in typical blockchain transactions!"
-            }
+            let data: OpcodeInfo | null = null
 
             switch (targetId) {
                 case "op_push_bytes":
@@ -43,8 +41,7 @@ const OpcodeDataVisualizer = () => {
                         description: "Dynamic data pushing (76-255 bytes)",
                         details:
                             "The OP_PUSHDATA1 opcode (0x4c) is followed by 1 byte indicating the number of bytes you want pushed on to the stack, followed by the actual bytes.  This is used when you want to push more data on the stack than you can with OP_PUSHBYTES_X.",
-                        example: "OP_PUSHDATA1 4c ",
-                        funFact: ""
+                        example: "OP_PUSHDATA1 4c "
                     }
                     break
                 case "op_push_data_2":
@@ -53,8 +50,7 @@ const OpcodeDataVisualizer = () => {
                         description: "Data between 256-65535 bytes",
                         details:
                             "The OP_PUSHDATA2 opcode (0x4d) works in the same was as OP_PUSHDATA1, except it's followed by 2 bytes to indicate the number of upcoming bytes to be pushed on to the stack.  This is used when you want to push more data on the stack than you can with OP_PUSHDATA1.",
-                        example: "OP_PUSHDATA2 0001 ",
-                        funFact: ""
+                        example: "OP_PUSHDATA2 0001 "
                     }
                     break
                 case "op_push_data_4":
@@ -63,8 +59,7 @@ const OpcodeDataVisualizer = () => {
                         description: "Data between 65536-4294967295 bytes",
                         details:
                             "The OP_PUSHDATA4 opcode (0x4e) works in the same was as OP_PUSHDATA2, but is followed by 4 bytes to indicate the number of upcoming bytes to be pushed on to the stack.  This is used when you want to push more data on the stack than you can with OP_PUSHDATA2.",
-                        example: "OP_PUSHDATA4 00000100 [65536 bytes]",
-                        funFact: ""
+                        example: "OP_PUSHDATA4 00000100 [65536 bytes]"
                     }
                     break
                 default:
@@ -72,14 +67,13 @@ const OpcodeDataVisualizer = () => {
             }
 
             setInfo((prevInfo) =>
-                prevInfo?.opcode === data.opcode ? null : data
+                prevInfo?.opcode === data?.opcode ? null : data
             )
         }
 
         if (svgElement) {
             const clickableAreas = svgElement.querySelectorAll(
-                "#op_push_bytes, #op_push_data_1, #op_push_data_2",
-                "#op_push_data_4"
+                "#op_push_bytes, #op_push_data_1, #op_push_data_2, #op_push_data_4"
             )
             clickableAreas.forEach((area) => {
                 area.addEventListener("click", handleClick)
@@ -89,11 +83,13 @@ const OpcodeDataVisualizer = () => {
         return () => {
             if (svgElement) {
                 const clickableAreas = svgElement.querySelectorAll(
-                    "#op_push_bytes, #op_push_data_1, #op_push_data_2",
-                    "#op_push_data_4"
+                    "#op_push_bytes, #op_push_data_1, #op_push_data_2, #op_push_data_4"
                 )
                 clickableAreas.forEach((area) => {
-                    area.removeEventListener("click", handleClick)
+                    area.removeEventListener(
+                        "click",
+                        handleClick as EventListener
+                    )
                 })
             }
         }
@@ -365,7 +361,6 @@ const OpcodeDataVisualizer = () => {
                     fill="black"
                 />
             </svg>
-
             {info && (
                 <div className="container mx-auto ">
                     <OpCodeInfo
@@ -383,7 +378,15 @@ const OpcodeDataVisualizer = () => {
 
 export default OpcodeDataVisualizer
 
-const OpCodeInfo = ({ opcode, description, details, example, funFact }) => {
+interface OpCodeInfoProps extends OpcodeInfo {}
+
+const OpCodeInfo: React.FC<OpCodeInfoProps> = ({
+    opcode,
+    description,
+    details,
+    example,
+    funFact
+}) => {
     return (
         <motion.div
             className="max-w-3xl mx-auto bg-gradient-to-br from-white-50 to-gray-100 rounded-xl overflow-hidden shadow-lg border border-gray-200"

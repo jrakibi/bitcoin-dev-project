@@ -8,7 +8,7 @@ import {
     PlayIcon,
     FastForwardIcon
 } from "lucide-react"
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useCallback } from "react"
 
 const opcodeData = {
     OP_CHECKSIG: {
@@ -106,20 +106,31 @@ const opcodeData = {
     // Add more opcodes as needed
 }
 
-const OpCodeExplorer = () => {
-    const [selectedOpCode, setSelectedOpCode] = useState(
+
+
+interface SvgatorPlayer {
+    ready: (callback: () => void) => void;
+    pause: () => void;
+    seekTo: (time: number) => void;
+    play: () => void;
+    duration: number;
+    currentTime: number;
+}
+
+const OpCodeExplorer: React.FC = () => {
+    const [selectedOpCode, setSelectedOpCode] = useState<string>(
         Object.keys(opcodeData)[0]
     )
-    const [isAsm, setIsAsm] = useState(true)
-    const [searchTerm, setSearchTerm] = useState("")
-    const [currentStep, setCurrentStep] = useState(0)
-    const [isPlaying, setIsPlaying] = useState(false)
+    const [isAsm, setIsAsm] = useState<boolean>(true)
+    const [searchTerm, setSearchTerm] = useState<string>("")
+    const [currentStep, setCurrentStep] = useState<number>(0)
+    const [isPlaying, setIsPlaying] = useState<boolean>(false)
     const svgRef = useRef<HTMLObjectElement | null>(null)
-    const playerRef = useRef<any>(null)
+    const playerRef = useRef<SvgatorPlayer | null>(null)
 
     const opCodes = Object.keys(opcodeData)
-    const currentOpCode = opcodeData[selectedOpCode]
-    const [totalSteps, setTotalSteps] = useState(4)
+    const currentOpCode = opcodeData[selectedOpCode as keyof typeof opcodeData]
+    const [totalSteps, setTotalSteps] = useState<number>(4)
 
     const filteredOpCodes = opCodes.filter((opCode) =>
         opCode.toLowerCase().includes(searchTerm.toLowerCase())
@@ -141,37 +152,37 @@ const OpCodeExplorer = () => {
         }
     }, [])
 
-    const initializeSvgPlayer = () => {
+    const initializeSvgPlayer = useCallback(() => {
         if (svgRef.current && svgRef.current.contentDocument) {
             const svgElement = svgRef.current.contentDocument.getElementById(
                 currentOpCode.svgId
-            )
+            ) as unknown as SVGSVGElement & { svgatorPlayer: SvgatorPlayer }
             if (svgElement && svgElement.svgatorPlayer) {
                 playerRef.current = svgElement.svgatorPlayer
                 playerRef.current.ready(() => {
-                    playerRef.current.pause()
-                    playerRef.current.seekTo(0)
+                    playerRef.current?.pause()
+                    playerRef.current?.seekTo(0)
                     const totalSeconds = Math.ceil(
-                        playerRef.current.duration / 1000
+                        (playerRef.current?.duration || 0) / 1000
                     )
                     setTotalSteps(totalSeconds)
                 })
             }
         }
-    }
+    }, [currentOpCode.svgId])
 
     useEffect(() => {
         setCurrentStep(0)
         setIsPlaying(false)
         playerRef.current = null // Reset the player
         setTimeout(initializeSvgPlayer, 100)
-    }, [selectedOpCode])
+    }, [selectedOpCode, initializeSvgPlayer])
 
     useEffect(() => {
         if (playerRef.current && isPlaying) {
             const interval = setInterval(() => {
-                const currentTime = playerRef.current.currentTime
-                const duration = playerRef.current.duration
+                const currentTime = playerRef.current?.currentTime || 0
+                const duration = playerRef.current?.duration || 0
                 const newStep = Math.floor(currentTime / 1000)
                 if (newStep !== currentStep) {
                     setCurrentStep(newStep)
@@ -179,7 +190,7 @@ const OpCodeExplorer = () => {
                 if (currentTime >= duration) {
                     setIsPlaying(false)
                     setCurrentStep(0)
-                    playerRef.current.seekTo(0)
+                    playerRef.current?.seekTo(0)
                     clearInterval(interval)
                 }
             }, 100)
@@ -218,14 +229,12 @@ const OpCodeExplorer = () => {
         })
     }
 
-    const playOneSecond = (startTime) => {
+    const playOneSecond = (startTime: number) => {
         if (playerRef.current) {
             playerRef.current.seekTo(startTime)
             playerRef.current.play()
             setTimeout(() => {
-                if (playerRef.current) {
-                    playerRef.current.pause()
-                }
+                playerRef.current?.pause()
             }, 1000)
         }
     }

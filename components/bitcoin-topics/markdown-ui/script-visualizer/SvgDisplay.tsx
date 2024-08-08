@@ -1,6 +1,5 @@
-// components/SvgDisplay.js
-
 import React from "react"
+import Image from "next/image"
 
 const SvgDisplay = ({
     src,
@@ -11,7 +10,7 @@ const SvgDisplay = ({
 }: any) => {
     return (
         <div {...props} className="flex items-center justify-center">
-            <img src={src} alt={alt} style={{ width, height }} />
+            <Image src={src} alt={alt} width={500} height={500} style={{ width, height }} />
         </div>
     )
 }

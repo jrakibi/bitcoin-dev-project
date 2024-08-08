@@ -7,20 +7,18 @@ import {
     Maximize2,
     Minimize2,
     CheckCircle,
-    Shield,
-    ShieldCheck,
     Key,
     Lock,
-    Unlock
+    Unlock,
 } from "lucide-react"
 import Image from "next/image"
 
 const participantNames = ["Alice", "Bob", "Carol"]
 
-const MultisigAnimation = () => {
+const MultisigAnimation: React.FC = () => {
     const [numParticipants, setNumParticipants] = useState(2)
     const [requiredSignatures, setRequiredSignatures] = useState(2)
-    const [signatures, setSignatures] = useState(new Array(2).fill(false))
+    const [signatures, setSignatures] = useState<boolean[]>(new Array(2).fill(false))
     const [animatingKey, setAnimatingKey] = useState<number | null>(null)
     const [isLocked, setIsLocked] = useState(true)
     const [isAuthorized, setIsAuthorized] = useState(false)
@@ -176,7 +174,7 @@ const MultisigAnimation = () => {
                             className="relative mx-auto"
                             style={{
                                 width: `${numParticipants * 192 + (numParticipants - 1) * 48}px`,
-                                maxWidth: "100%"
+                                maxWidth: "100%",
                             }}
                         >
                             <MultisigWallet
@@ -204,22 +202,18 @@ const MultisigAnimation = () => {
     )
 }
 
-const ConnectingLine = ({
-    isActive,
-    isAnimating,
-    isAuthorized
-}: {
+const ConnectingLine: React.FC<{
     isActive: boolean
     isAnimating: boolean
     isAuthorized: boolean
-}) => (
+}> = ({ isActive, isAnimating, isAuthorized }) => (
     <div
         className={`absolute left-1/2 top-full w-1 h-32 -translate-x-1/2 transition-all duration-300 ${
             isAuthorized
                 ? "bg-green-500"
                 : isActive
-                  ? "bg-orange-500"
-                  : "bg-[#454C54]"
+                ? "bg-orange-500"
+                : "bg-[#454C54]"
         }`}
     >
         {isAnimating && (
@@ -235,7 +229,14 @@ const ConnectingLine = ({
     </div>
 )
 
-const MultisigWallet = React.forwardRef(
+const MultisigWallet = React.forwardRef<HTMLDivElement, {
+    signatures: boolean[]
+    isLocked: boolean
+    animatingKey: number | null
+    isAuthorized: boolean
+    requiredSignatures: number
+    totalParticipants: number
+}>(
     (
         {
             signatures,
@@ -243,32 +244,21 @@ const MultisigWallet = React.forwardRef(
             animatingKey,
             isAuthorized,
             requiredSignatures,
-            totalParticipants
-        }: {
-            signatures: boolean[]
-            isLocked: boolean
-            animatingKey: number | null
-            isAuthorized: boolean
-            requiredSignatures: number
-            totalParticipants: number
+            totalParticipants,
         },
         ref
     ) => (
         <div
-            ref={ref}
             className={`relative w-full h-36 mx-auto border-2 border-[#454C54] rounded-lg p-4 transform transition-all duration-300 ${
                 isAuthorized ? "bg-green-100" : "bg-[#454c54]"
             }`}
+            ref={ref}
         >
             <div className="absolute top-2 right-2 flex items-center space-x-2">
                 {isLocked ? (
-                    <>
-                        <Lock size={28} className="text-gray-100" />
-                    </>
+                    <Lock size={28} className="text-gray-100" />
                 ) : (
-                    <>
-                        <Unlock size={28} className="text-green-500" />
-                    </>
+                    <Unlock size={28} className="text-green-500" />
                 )}
             </div>
             <p
@@ -282,29 +272,17 @@ const MultisigWallet = React.forwardRef(
             <div className="flex justify-around mb-4">
                 {signatures.map((signed, index) => (
                     <motion.div
-                        key={index}
-                        initial={false}
-                        animate={{
-                            backgroundColor: isAuthorized
-                                ? "#10B981"
-                                : signed
-                                  ? "#FFA500"
-                                  : animatingKey === index
-                                    ? "#FFA500"
-                                    : "#272e35"
-                        }}
-                        className="w-6 h-6 rounded-full flex items-center justify-center"
-                        style={{
-                            boxShadow: isAuthorized
-                                ? "0 0 10px 3px rgba(16, 185, 129, 0.7)"
-                                : signed
-                                  ? "0 0 10px 3px rgba(255, 165, 0, 0.7)"
-                                  : animatingKey === index
-                                    ? "0 0 10px 3px rgba(255, 165, 0, 0.7)"
-                                    : "none",
-                            transition: "all 0.3s ease-in-out"
-                        }}
-                    >
+                    key={index}
+                    initial={false}
+                    style={{
+                      backgroundColor: isAuthorized ? '#10B981' : signed ? '#FFA500' : animatingKey === index ? '#FFA500' : '#272e35',
+                      boxShadow: isAuthorized ? '0 0 10px 3px rgba(16, 185, 129, 0.7)' : signed ? '0 0 10px 3px rgba(255, 165, 0, 0.7)' : animatingKey === index ? '0 0 10px 3px rgba(255, 165, 0, 0.7)' : 'none',
+                      transition: 'all 0.3s ease-in-out',
+                    }}
+                    className="w-6 h-6 rounded-full flex items-center justify-center"
+                  >
+                  
+                  
                         {signed && <Key className="text-white" size={16} />}
                         {animatingKey === index && (
                             <motion.div
@@ -313,7 +291,7 @@ const MultisigWallet = React.forwardRef(
                                 transition={{
                                     repeat: Infinity,
                                     duration: 0.3,
-                                    repeatType: "reverse"
+                                    repeatType: "reverse",
                                 }}
                             >
                                 <Key className="text-white" size={16} />
@@ -328,21 +306,14 @@ const MultisigWallet = React.forwardRef(
 
 MultisigWallet.displayName = "MultisigWallet"
 
-const Participant = ({
-    name,
-    onSign,
-    signed,
-    disabled,
-    isAnimating,
-    imageUrl
-}: {
+const Participant: React.FC<{
     name: string
     onSign: () => void
     signed: boolean
     disabled: boolean
     isAnimating: boolean
     imageUrl: string
-}) => (
+}> = ({ name, onSign, signed, disabled, isAnimating, imageUrl }) => (
     <div
         className={`bg-[#E5E6F1] rounded-lg shadow p-6 text-center w-full sm:w-48 ${
             isAnimating ? "bg-orange-100" : ""
@@ -367,17 +338,17 @@ const Participant = ({
                 isAnimating
                     ? "bg-yellow-500 text-[#E5E6F1]"
                     : signed
-                      ? "bg-green-500 text-[#E5E6F1]"
-                      : disabled
-                        ? "bg-[#454C54] text-[#E5E6F1]"
-                        : "bg-orange-500 text-[#E5E6F1] hover:bg-orange-600"
+                    ? "bg-green-500 text-[#E5E6F1]"
+                    : disabled
+                    ? "bg-[#454C54] text-[#E5E6F1]"
+                    : "bg-orange-500 text-[#E5E6F1] hover:bg-orange-600"
             }`}
         >
             {isAnimating
                 ? "Signing ..."
                 : signed
-                  ? "Signed"
-                  : "Sign transaction"}
+                ? "Signed"
+                : "Sign transaction"}
             {!signed && !disabled && !isAnimating && (
                 <div className="absolute top-0 left-0 w-full h-full">
                     <div className="animate-shimmer absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30"></div>
