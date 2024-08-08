@@ -28,7 +28,9 @@ export default function ExpandableSection({
                         style={{ display: "flex" }}
                     >
                         <BookIcon className="text-[#635FC7] mr-3" />
-                        <span className="font-bold text-black">{title}</span>
+                        <span className="font-semibold text-black">
+                            {title}
+                        </span>
                     </h4>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -37,7 +39,7 @@ export default function ExpandableSection({
                     </div>
                 </div>
                 <button
-                    className="text-black font-bold mt-6 focus:outline-none flex items-center"
+                    className="text-black font-bold focus:outline-none flex items-center"
                     onClick={handleToggle}
                     style={{ textDecoration: "none" }}
                 >

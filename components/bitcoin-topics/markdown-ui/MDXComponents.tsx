@@ -9,8 +9,15 @@ import ScriptStackVisualizer from "./script-visualizer/scriptVisualizer"
 import TransactionsDisplay from "./transaction-serializer/TransactionDisplay"
 import CodeEditor from "./CodeEditor"
 import { QuickLink, QuickLinks } from "./QuickLinks"
-import CodeSolution from "./code-solution"
 import SandpackComponent from "./sandpack"
+import Hint from "./Hints"
+import MinimalVideoPlayer from "./minimal-video-player"
+import ScriptDecoder from "./script-decoder"
+import ExpandableAlert from "./expandable-alert"
+import P2SHEncoder from "./address-encoder"
+import OpcodeDataVisualizer from "./opcode-data-visualizer"
+import OpCodeExplorer from "./opcode-explorer"
+import MultisigAnimation from "./multisig-animation"
 
 export const components: MDXComponents = {
     Image,
@@ -24,6 +31,13 @@ export const components: MDXComponents = {
     TransactionsDisplay,
     QuickLinks,
     QuickLink,
-    CodeSolution,
-    SandpackComponent
+    SandpackComponent,
+    Hint,
+    MinimalVideoPlayer,
+    ScriptDecoder,
+    ExpandableAlert,
+    P2SHEncoder,
+    OpcodeDataVisualizer,
+    OpCodeExplorer,
+    MultisigAnimation
 }

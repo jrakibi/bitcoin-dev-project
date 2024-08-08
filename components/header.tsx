@@ -34,9 +34,12 @@ export function Header() {
                     <div className="flex lg:flex-1">
                         <Link href="/">
                             <h1 className="text-xl md:text-xl font-bold">
-                                The&nbsp;
-                                <span className="text-orange-500">Bitcoin</span>
-                                &nbsp;Dev Project
+                                The
+                                <span className="text-orange-500">
+                                    {" "}
+                                    Bitcoin{" "}
+                                </span>
+                                Dev Project
                             </h1>
                         </Link>
                     </div>
@@ -219,9 +222,12 @@ export function Header() {
                     <div className="flex items-center justify-between">
                         <Link href="/">
                             <h1 className="text-2xl md:text-xl font-bold">
-                                The&nbsp;
-                                <span className="text-orange-500">Bitcoin</span>
-                                &nbsp;Dev Project
+                                The
+                                <span className="text-orange-500">
+                                    {" "}
+                                    Bitcoin{" "}
+                                </span>
+                                Dev Project
                             </h1>
                         </Link>
                         <button
