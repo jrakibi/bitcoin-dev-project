@@ -1,34 +1,21 @@
 import React from "react"
 import Image from "next/image"
 
-interface SvgDisplayProps {
-    src: string
-    alt?: string
-    width?: number
-    height?: number
-    className?: string
-}
-
-const SvgDisplay: React.FC<SvgDisplayProps> = ({
+const SvgDisplay = ({
     src,
     alt = "SVG Image",
-    width = 100,
-    height = 100,
-    className = "",
+    width = "100%",
+    height = "auto",
     ...props
-}) => {
-    debugger
+}: any) => {
     return (
-        <div
-            className={`flex items-center justify-center ${className}`}
-            {...props}
-        >
+        <div {...props} className="flex items-center justify-center">
             <Image
                 src={src}
                 alt={alt}
-                width={width}
-                height={height}
-                layout="responsive"
+                width={500}
+                height={500}
+                style={{ width, height }}
             />
         </div>
     )

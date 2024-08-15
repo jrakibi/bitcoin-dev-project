@@ -1,4 +1,9 @@
-import { Barlow, Bricolage_Grotesque, Inter } from "next/font/google"
+import {
+    Barlow,
+    Bricolage_Grotesque,
+    Inter,
+    Space_Grotesk
+} from "next/font/google"
 
 export const barlow = Barlow({
     weight: ["100", "300", "400", "500", "600", "700"],
@@ -16,6 +21,14 @@ export const bricolage = Bricolage_Grotesque({
     subsets: ["latin"]
 })
 
+const space_grotesk = Space_Grotesk({
+    weight: ["300", "400", "500", "600", "700"],
+    preload: true,
+    subsets: ["latin"],
+    display: "swap",
+    variable: "--font-space-grotesk"
+})
+
 const inter = Inter({ subsets: ["latin"] })
 
 export default function Fonts() {
@@ -24,7 +37,7 @@ export default function Fonts() {
             dangerouslySetInnerHTML={{
                 __html: `
           :root {
-            --barlow-font: ${bricolage.style.fontFamily};
+            --barlow-font: ${space_grotesk.style.fontFamily};
           }`
             }}
         ></style>

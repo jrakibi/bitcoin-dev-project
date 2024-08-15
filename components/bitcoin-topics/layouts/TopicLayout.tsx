@@ -36,9 +36,9 @@ export default function TopicLayout({
         <div className="flex w-full flex-col">
             {isHomePage && <Hero />}
 
-            <div className="relative mx-auto flex w-full max-w-8xl flex-auto justify-center sm:px-2 lg:px-8 xl:px-12">
-                <div className="hidden lg:relative lg:block lg:flex-nne">
-                    <div className="absolute inset-y-0 right-0 w-[50vw] dark:hidden" />
+            <div className="relative mx-auto flex w-full max-w-9xl flex-auto justify-center sm:px-2 lg:px-8 xl:px-12">
+                <div className="hidden lg:relative lg:block lg:flex-none  border-r border-orange ">
+                    <div className="absolute inset-y-0 right-0 bg-[#fff8eb6e] dark:bg-transparent w-[50vw] dark:hidden" />
                     <div className="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-gray-800 dark:block" />
                     <div className="absolute bottom-0 right-0 top-28 hidden w-px bg-gray-800 dark:block" />
                     <div className="sticky top-[4.75rem] -ml-0.5 h-[calc(100vh-4.75rem)] w-64 overflow-y-auto overflow-x-hidden py-16 pl-0.5 pr-4 xl:w-72 xl:pr-8">
@@ -46,7 +46,7 @@ export default function TopicLayout({
                     </div>
                 </div>
 
-                <div className="min-w-0 max-w-2xl flex-auto px-4 py-16 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+                <div className="min-w-0 max-w-3xl flex-auto px-4 py-16 lg:mx-auto lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
                     <article>
                         <TopicHeader
                             title={title}

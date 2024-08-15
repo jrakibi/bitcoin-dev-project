@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+const { fontFamily } = require("tailwindcss/defaultTheme")
 
 const config: Config = {
     content: [
@@ -71,9 +72,27 @@ const config: Config = {
                     "950": "#1c1c1e"
                 }
             },
+            keyframes: {
+                updown: {
+                    "0%, 100%": { transform: "translateY(0)" },
+                    "50%": { transform: "translateY(-10px)" }
+                },
+                leftright: {
+                    "0%, 100%": { transform: "translateX(0)" },
+                    "50%": { transform: "translateX(-10px)" }
+                }
+            },
+            animation: {
+                updown: "updown 2s infinite",
+                leftright: "leftright 1.5s infinite"
+            },
             fontFamily: {
                 brawler: ["var(--brawler-font)"],
-                inter: ["var(--inter-font)"]
+                inter: ["var(--inter-font)"],
+                sans: ["var(--font-space-grotesk)", ...fontFamily.sans]
+            },
+            fontSize: {
+                lg: ["17px", "28px"]
             }
         }
     },

@@ -52,7 +52,7 @@ const icons = {
 }
 
 const iconStyles = {
-    orange: "[--icon-foreground:theme(colors.orange.900)] [--icon-background:theme(colors.white)]",
+    orange: "[--icon-foreground:theme(colors.orange.900)] [--icon-background:theme(colors.white.500)]",
     amber: "[--icon-foreground:theme(colors.amber.900)] [--icon-background:theme(colors.amber.100)]"
 }
 

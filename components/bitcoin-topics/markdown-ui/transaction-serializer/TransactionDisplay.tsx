@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import TransactionDecoder from "./decodeTransaction"
+import { motion } from "framer-motion"
 
 interface TransactionsDisplayProps {
     rawTx: string
@@ -97,6 +98,8 @@ const TransactionsDisplay: React.FC<TransactionsDisplayProps> = ({
     const [selectedDetail, setSelectedDetail] = useState<ScriptDetail | null>(
         null
     )
+    const [highlightedItemClicked, setHighlightedItemClicked] = useState(false)
+    const [visibleItems, setVisibleItems] = useState({ inputs: 3, outputs: 3 })
 
     useEffect(() => {
         const decoder = new TransactionDecoder(rawTx, "mainnet")
@@ -105,7 +108,9 @@ const TransactionsDisplay: React.FC<TransactionsDisplayProps> = ({
     }, [rawTx])
 
     const handleDetailChange = (
-        detail: TransactionInput | TransactionOutput
+        detail: TransactionInput | TransactionOutput,
+        index: number,
+        type: "inputs" | "outputs"
     ) => {
         if ("scriptSig" in detail) {
             setSelectedDetail(
@@ -118,6 +123,102 @@ const TransactionsDisplay: React.FC<TransactionsDisplayProps> = ({
                     : detail.scriptPubKey
             )
         }
+
+        if (
+            highlightIndex &&
+            highlightIndex[type as keyof typeof highlightIndex] === index
+        ) {
+            setHighlightedItemClicked((prev) => !prev)
+        }
+    }
+
+    const renderItems = (items: any[], type: "inputs" | "outputs") => {
+        const visibleCount = visibleItems[type]
+        const displayedItems = items.slice(0, visibleCount)
+        const remainingCount = items.length - visibleCount
+
+        return (
+            <>
+                {displayedItems.map((item, index) => (
+                    <motion.button
+                        key={index}
+                        className={`mb-2 cursor-pointer rounded-lg p-2 ${
+                            highlightIndex?.[
+                                type as keyof typeof highlightIndex
+                            ] === index
+                                ? "bg-orange-100 shadow-lg"
+                                : "bg-white dark:bg-black"
+                        }`}
+                        onClick={() => handleDetailChange(item, index, type)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        animate={
+                            highlightIndex?.[
+                                type as keyof typeof highlightIndex
+                            ] === index && !highlightedItemClicked
+                                ? {
+                                      scale: [1, 1.03, 1],
+                                      transition: {
+                                          duration: 0.7,
+                                          repeat: Infinity,
+                                          repeatType: "reverse"
+                                      }
+                                  }
+                                : {}
+                        }
+                    >
+                        <div className="flex items-center justify-between">
+                            <div
+                                className={`font-medium ${
+                                    highlightIndex?.[
+                                        type as keyof typeof highlightIndex
+                                    ] === index
+                                        ? "text-orange-600"
+                                        : "text-gray-800 dark:text-gray-200"
+                                }`}
+                            >
+                                {type === "inputs" ? "Input" : "Output"}{" "}
+                                {index + 1}
+                            </div>
+                            <span
+                                className={`rounded-full bg-orange-200 px-3 py-1 text-sm ${
+                                    highlightIndex?.[
+                                        type as keyof typeof highlightIndex
+                                    ] === index
+                                        ? "text-orange-600"
+                                        : "text-black-800 dark:text-gray-800"
+                                }`}
+                            >
+                                {type === "inputs"
+                                    ? `Prev Out: ${item.type || "Unknown"}`
+                                    : item.type || "Unknown"}
+                            </span>
+                        </div>
+                        {type === "outputs" && (
+                            <div className="text-left text-sm text-gray-600 dark:text-gray-400">
+                                {item.value} BTC
+                            </div>
+                        )}
+                    </motion.button>
+                ))}
+                {remainingCount > 0 && (
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-100 dark:to-gray-800 blur-sm"></div>
+                        <button
+                            onClick={() =>
+                                setVisibleItems((prev) => ({
+                                    ...prev,
+                                    [type]: prev[type] + 3
+                                }))
+                            }
+                            className="relative z-10 w-full py-2 mt-2 border border-orange-500 text-orange-500 rounded hover:bg-gray-100 hover:border-orange-600 hover:text-orange-600"
+                        >
+                            Show 3 more {type} ({remainingCount} remaining)
+                        </button>
+                    </div>
+                )}
+            </>
+        )
     }
 
     return (
@@ -131,55 +232,30 @@ const TransactionsDisplay: React.FC<TransactionsDisplayProps> = ({
                             </h1>
                         )}
                         {txId && (
-                            <p className="m-1 whitespace-pre-wrap break-words text-sm text-gray-600 dark:text-gray-400">
-                                Transaction ID: {txId}
+                            <p className="m-1 whitespace-pre-wrap break-words text-gray-600 dark:text-gray-400">
+                                Transaction ID:{" "}
+                                <a
+                                    href={`https://mempool.space/tx/${txId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-500 hover:text-gray-600 underline"
+                                >
+                                    {txId}
+                                </a>
                             </p>
                         )}
                     </div>
                     <div className="relative flex flex-col items-start gap-3 lg:flex-row">
                         <div className="flex w-full flex-col p-2 lg:w-1/2">
-                            {decodedTransaction?.inputs?.map(
-                                (input: TransactionInput, index: number) => (
-                                    <button
-                                        key={index}
-                                        className={`mb-2 cursor-pointer rounded-lg p-2 ${
-                                            highlightIndex?.input === index
-                                                ? "bg-orange-100 shadow"
-                                                : "bg-white dark:bg-black"
-                                        }`}
-                                        onClick={() =>
-                                            handleDetailChange(input)
-                                        }
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <div
-                                                className={`font-medium ${
-                                                    highlightIndex?.input ===
-                                                    index
-                                                        ? "text-gray-800 "
-                                                        : "text-gray-800 dark:text-gray-200 "
-                                                }`}
-                                            >
-                                                Input {index + 1}
-                                            </div>
-                                            <span
-                                                className={`rounded-full bg-orange-200 px-3 py-1 text-xs ${
-                                                    highlightIndex?.input ===
-                                                    index
-                                                        ? "text-gray-800"
-                                                        : "text-black-800 dark:text-gray-800"
-                                                }`}
-                                                title="This is the type of the previous transaction's output that this input is spending."
-                                            >
-                                                Prev Out:{" "}
-                                                {input.type || "Unknown"}
-                                            </span>
-                                        </div>
-                                        <div className="text-left text-sm text-gray-600 dark:text-gray-400">
-                                            Click to view details
-                                        </div>
-                                    </button>
-                                )
+                            <span className="font-semibold text-xl mt-4 mb-4">
+                                Inputs{" "}
+                                <span className="font-normal text-base">
+                                    ({decodedTransaction?.inputs?.length})
+                                </span>
+                            </span>
+                            {renderItems(
+                                decodedTransaction?.inputs || [],
+                                "inputs"
                             )}
                         </div>
 
@@ -197,46 +273,15 @@ const TransactionsDisplay: React.FC<TransactionsDisplayProps> = ({
                                 </svg>
                             )}
                         <div className="flex w-full flex-col p-2 lg:w-1/2">
-                            {decodedTransaction?.outputs?.map(
-                                (output: TransactionOutput, index: number) => (
-                                    <button
-                                        key={index}
-                                        className={`mb-2 cursor-pointer rounded-lg p-2 ${
-                                            highlightIndex?.output === index
-                                                ? "bg-orange-100 shadow"
-                                                : "bg-white dark:bg-black"
-                                        }`}
-                                        onClick={() =>
-                                            handleDetailChange(output)
-                                        }
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <div
-                                                className={`font-medium ${
-                                                    highlightIndex?.output ===
-                                                    index
-                                                        ? "text-gray-800 "
-                                                        : "text-gray-800 dark:text-gray-200 "
-                                                }`}
-                                            >
-                                                Output {index + 1}
-                                            </div>
-                                            <span
-                                                className={`rounded-full bg-orange-200 px-3 py-1 text-sm ${
-                                                    highlightIndex?.output ===
-                                                    index
-                                                        ? "text-gray-800"
-                                                        : "text-black-800 dark:text-gray-800"
-                                                }`}
-                                            >
-                                                {output.type || "Unknown"}
-                                            </span>
-                                        </div>
-                                        <div className="text-left text-sm text-gray-600 dark:text-gray-400">
-                                            {output.value} BTC
-                                        </div>
-                                    </button>
-                                )
+                            <span className="font-semibold text-xl mt-4 mb-4">
+                                Outputs{" "}
+                                <span className="font-normal text-base">
+                                    ({decodedTransaction?.outputs?.length})
+                                </span>
+                            </span>
+                            {renderItems(
+                                decodedTransaction?.outputs || [],
+                                "outputs"
                             )}
                         </div>
                     </div>

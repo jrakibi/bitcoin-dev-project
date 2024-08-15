@@ -8,7 +8,13 @@ import { components } from "@/components/bitcoin-topics/markdown-ui/MDXComponent
 import { Metadata } from "next"
 import siteMetadata from "@/data/siteMetadata"
 import { getAuthorDetails, getTopicData } from "@/utils/content-utils"
+import { Space_Grotesk, Sriracha } from "next/font/google"
 
+const space_grotesk = Space_Grotesk({
+    subsets: ["latin"],
+    display: "swap",
+    variable: "--font-space-grotesk"
+})
 export async function generateMetadata({
     params
 }: {
@@ -73,22 +79,24 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-            <TopicLayout
-                content={mainContent}
-                authorDetails={authorDetails}
-                next={next}
-                prev={prev}
-            >
-                <MDXLayoutRenderer
-                    code={post.body.code}
-                    components={components}
-                    toc={post.toc}
+            <div className={`${space_grotesk.variable} scroll-smooth`}>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
                 />
-            </TopicLayout>
+                <TopicLayout
+                    content={mainContent}
+                    authorDetails={authorDetails}
+                    next={next}
+                    prev={prev}
+                >
+                    <MDXLayoutRenderer
+                        code={post.body.code}
+                        components={components}
+                        toc={post.toc}
+                    />
+                </TopicLayout>
+            </div>
         </>
     )
 }
