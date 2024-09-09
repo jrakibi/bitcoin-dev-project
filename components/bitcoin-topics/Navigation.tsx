@@ -168,12 +168,8 @@ export function Navigation({
     }, [])
 
     return (
-        <nav
-            className={clsx(
-                "text-md lg:text-sm font-medium overflow-y-auto max-h-screen",
-                className
-            )}
-        >
+        // <nav className={clsx("text-md lg:text-sm font-medium", className)}>
+        <nav className={clsx("text-md lg:text-sm font-medium", className)}>
             <Link
                 className="mb-6 flex flex-row items-center space-x-3 hover:no-underline"
                 href="/topics"

@@ -48,16 +48,7 @@ export default function TopicBanner({
     const { title, tags }: { title: string; tags: string[] } = content
 
     const toggleNav = () => setIsNavOpen(!isNavOpen)
-    useEffect(() => {
-        if (isNavOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "unset"
-        }
-        return () => {
-            document.body.style.overflow = "unset"
-        }
-    }, [isNavOpen])
+
     const handleDragEnd = (
         event: MouseEvent | TouchEvent | PointerEvent,
         info: PanInfo
@@ -186,7 +177,7 @@ export default function TopicBanner({
                                     className="absolute inset-0 bg-black bg-opacity-50"
                                     onClick={toggleNav}
                                 />
-                                <div className="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-900 overflow-y-auto">
+                                <div className="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-900  overflow-y-auto max-h-screen">
                                     <div className="py-4 px-4">
                                         <Navigation
                                             content={content}
