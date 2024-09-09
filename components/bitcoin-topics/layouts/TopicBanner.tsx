@@ -48,7 +48,16 @@ export default function TopicBanner({
     const { title, tags }: { title: string; tags: string[] } = content
 
     const toggleNav = () => setIsNavOpen(!isNavOpen)
-
+    useEffect(() => {
+        if (isNavOpen) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = "unset"
+        }
+        return () => {
+            document.body.style.overflow = "unset"
+        }
+    }, [isNavOpen])
     const handleDragEnd = (
         event: MouseEvent | TouchEvent | PointerEvent,
         info: PanInfo
