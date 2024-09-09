@@ -13,6 +13,7 @@ import { useState, useEffect, useCallback, useMemo } from "react"
 import { motion } from "framer-motion"
 import { FaChevronRight, FaChevronDown } from "react-icons/fa"
 import * as Icons from "react-icons/fa"
+import { useMediaQuery } from "react-responsive"
 
 interface NavigationLink {
     title: string
@@ -51,6 +52,7 @@ export function Navigation({
     const [expandedTopics, setExpandedTopics] = useState<
         Record<string, boolean>
     >({})
+    const isMobile = useMediaQuery({ maxWidth: 767 })
 
     // Load expanded state from localStorage on component mount
     useEffect(() => {
@@ -191,25 +193,46 @@ export function Navigation({
                                 <li key={link.href} className="relative">
                                     <div
                                         className={clsx(
-                                            "flex items-center cursor-pointer rounded-md",
+                                            "flex items-center rounded-md",
                                             "transition-colors duration-200 ease-in-out",
                                             link.href === pathname
                                                 ? "bg-orange-100 dark:bg-orange-900/20"
-                                                : "hover:bg-gray-100 dark:hover:bg-gray-800/50"
+                                                : isMobile
+                                                  ? ""
+                                                  : "hover:bg-gray-100 dark:hover:bg-gray-800/50",
+                                            isMobile
+                                                ? "cursor-default"
+                                                : "cursor-pointer"
                                         )}
-                                        onClick={() => toggleTopic(link.href)}
+                                        onClick={
+                                            isMobile
+                                                ? undefined
+                                                : () => toggleTopic(link.href)
+                                        }
                                     >
                                         <Link
                                             href={link.href}
                                             onClick={(e) => {
-                                                e.stopPropagation()
-                                                onLinkClick && onLinkClick(e)
+                                                if (
+                                                    isMobile &&
+                                                    link.children &&
+                                                    link.children.length > 0
+                                                ) {
+                                                    e.preventDefault()
+                                                    toggleTopic(link.href)
+                                                } else {
+                                                    onLinkClick &&
+                                                        onLinkClick(e)
+                                                }
                                             }}
                                             className={clsx(
                                                 "flex items-center font-medium w-full py-2 px-3 rounded-md",
                                                 link.href === pathname
                                                     ? "text-orange-500"
-                                                    : "text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                                                    : "text-gray-700 dark:text-gray-300",
+                                                isMobile
+                                                    ? ""
+                                                    : "hover:text-gray-900 dark:hover:text-white"
                                             )}
                                         >
                                             {link.icon && getIcon(link.icon)}
