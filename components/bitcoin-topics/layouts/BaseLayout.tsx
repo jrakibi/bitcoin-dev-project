@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CheckCircle, Loader2, ArrowRight, MoreVertical } from "lucide-react"
 import React from "react"
 import { GitHubIcon } from "@/public/images/topics-hero/GitHubIcon"
+import SearchHeader from "@/components/SearchButton"
 
 interface LayoutProps {
     content: CoreContent<Topic>
@@ -380,6 +381,8 @@ export default function BaseLayout({
                         </>
                     ) : (
                         <article>
+                            <SearchHeader />
+
                             <TopicHeader
                                 title={title}
                                 tags={tags}

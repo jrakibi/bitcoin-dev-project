@@ -6,6 +6,7 @@ import { Header } from "@/components/header"
 import { ThemeProvider } from "next-themes"
 import "remark-github-blockquote-alert/alert.css"
 import siteMetadata from "@/data/siteMetadata"
+import { SearchProvider } from "@/components/search/SearchProvider"
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteMetadata.siteUrl),
@@ -85,9 +86,11 @@ export default function RootLayout({
                     attribute="class"
                     defaultTheme={siteMetadata.theme}
                 >
-                    <Header />
-                    <main>{children}</main>
-                    <Footer />
+                    <SearchProvider>
+                        <Header />
+                        <main>{children}</main>
+                        <Footer />
+                    </SearchProvider>
                 </ThemeProvider>
             </body>
         </html>

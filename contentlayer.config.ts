@@ -24,6 +24,7 @@ import rehypePresetMinify from "rehype-preset-minify"
 import { remarkAlert } from "remark-github-blockquote-alert"
 
 import siteMetadata from "./data/siteMetadata"
+import { allCoreContent, sortPosts } from "pliny/utils/contentlayer.js"
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === "production"
@@ -144,6 +145,20 @@ function createTagCount(allTopics: any[]) {
     writeFileSync("./app/tag-data.json", JSON.stringify(tagCount))
 }
 
+function createSearchIndex(allTopics: any[]) {
+    debugger
+    if (
+        siteMetadata?.search?.provider === "kbar" &&
+        siteMetadata.search.kbarConfig.searchDocumentsPath
+    ) {
+        writeFileSync(
+            `public/${siteMetadata.search.kbarConfig.searchDocumentsPath}`,
+            JSON.stringify(allCoreContent(sortPosts(allTopics)))
+        )
+        console.log("Local search index generated...")
+    }
+}
+
 export default makeSource({
     contentDirPath: "public/bitcoin-topics",
     contentDirInclude: ["decoding", "authors"],
@@ -182,5 +197,6 @@ export default makeSource({
     onSuccess: async (importData) => {
         const { allTopics } = await importData()
         createTagCount(allTopics)
+        createSearchIndex(allTopics)
     }
 })

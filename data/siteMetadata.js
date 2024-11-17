@@ -22,6 +22,20 @@ const siteMetadata = {
         card: "summary_large_image",
         link: "https://x.com/Bitcoin_Devs"
     },
+    search: {
+        provider: "kbar", // kbar or algolia
+        kbarConfig: {
+            searchDocumentsPath: "search.json" // path to load documents to search
+        }
+        // provider: 'algolia',
+        // algoliaConfig: {
+        //   // The application ID provided by Algolia
+        //   appId: 'R2IYF7ETH7',
+        //   // Public API key: it is safe to commit it
+        //   apiKey: '599cec31baffa4868cae4e79f180729b',
+        //   indexName: 'docsearch',
+        // },
+    },
     keywords:
         "bitcoin, lightning, bitcoin development, bitcoin open source, bitcoin FOSS, bitcoin career, free open source software, open source, bitcoin development, bitcoin development community, bitcoin development resources, bitcoin development tools, bitcoin development guides, bitcoin development courses"
 }
