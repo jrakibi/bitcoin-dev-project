@@ -46,7 +46,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
                         keywords: post?.summary || "",
                         section: "Documentation",
                         subtitle: post.tags?.join(", ") || "",
-                        perform: () => router.push(post.path)
+                        perform: () => router.push(`/${post.path}`)
                     }))
                 }
             }}
