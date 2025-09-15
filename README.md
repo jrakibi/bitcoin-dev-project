@@ -1,4 +1,4 @@
-![The Bitcoin Dev Project](./public/images/landscape_2_1.jpg)
+![The Bitcoin Dev Project](./public/images/landscape_2_1.webp)
 
 # The Bitcoin Dev Project
 

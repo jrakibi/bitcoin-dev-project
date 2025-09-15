@@ -9,7 +9,7 @@ const siteMetadata = {
     siteUrl: "https://bitcoindevs.xyz",
     siteRepo: "https://github.com/bitcoin-dev-project/bitcoin-dev-project",
     topicsRepo: "https://github.com/bitcoin-dev-project/decoding-bitcoin",
-    siteLogo: "/public/hero.jpg",
+    siteLogo: "/public/hero.webp",
     socialBanner:
         "https://bitcoindevs.xyz/images/pages-thumbnails/social-banner.jpg",
     github: "https://github.com/bitcoin-dev-project/",
