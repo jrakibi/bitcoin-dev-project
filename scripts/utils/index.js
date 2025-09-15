@@ -139,15 +139,15 @@ function shuffle(data) {
 const swapImageUrl = (name, imageUrl) => {
     switch (name) {
         case "polar":
-            return "/images/projects/polar.jpg";
+            return "/images/projects/polar.webp";
         case "lnd":
-            return "/images/projects/lnd.png";
+            return "/images/projects/lnd.webp";
         case "eclair":
-            return "/images/projects/eclair-logo.png";
+            return "/images/projects/eclair-logo.webp";
         case "warnet":
-            return "/images/projects/warnet.jpg";
+            return "/images/projects/warnet1.webp";
         case "sim-ln":
-            return "/images/projects/simln.jpg";
+            return "/images/projects/simln.webp";
         default:
             return imageUrl;
     }
